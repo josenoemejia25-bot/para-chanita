@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Chanita 💛</title>
+    <style>
+        /* --- ESTILOS BASE Y CENTRADO --- */
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; color: #fff; font-family: sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .hidden { display: none !important; }
+        .texto-amarillo { color: #ffd600; text-align: center; font-weight: bold; text-shadow: 0 0 10px rgba(255, 214, 0, 0.5); }
+
+        /* --- PANTALLA 1: EL SOBRE (Con latido) --- */
+        #pantalla-sobre { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; transition: opacity 0.8s; }
+        .sobre-icono { font-size: 80px; cursor: pointer; animation: latido 1.5s infinite; filter: drop-shadow(0 0 10px #ffd600); margin: 20px; }
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* --- PANTALLA 2: EL REGALO (Diseño centrado) --- */
+        #regalo { position: relative; width: 100%; max-width: 400px; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 30px 20px; z-index: 10; }
+        
+        /* Efecto de Estrellas/Destellos */
+        .stars-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.3; z-index: 1; pointer-events: none; }
+
+        /* REPRODUCTOR TIKTOK */
+        .player { background: #ffd600; color: #000; width: 90%; padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px; z-index: 20; box-shadow: 0 0 15px rgba(255, 214, 0, 0.7); font-weight: bold; font-size: 0.9rem; }
+        #play-icon { cursor: pointer; font-size: 1.2rem; }
+        #progress-bar { flex-grow: 1; height: 5px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
+        #progress-fill { height: 100%; width: 0%; background: #000; transition: width 0.1s linear; }
+
+        /* EL CORAZÓN CON TU FOTO */
+        .heart-photo { width: 220px; height: 200px; background: #ffd600; -webkit-clip-path: url(#svgHeart); clip-path: url(#svgHeart); display: flex; justify-content: center; align-items: center; box-shadow: 0 0 30px #ffd600; z-index: 15; }
+        .heart-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* CONTADOR */
+        .contador { background: rgba(255, 214, 0, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 214, 0, 0.4); text-align: center; width: 90%; z-index: 20; margin-bottom: 20px; }
+        .contador p { margin: 0 0 5px 0; font-size: 0.8rem; color: #ccc; }
+        #tiempo { font-size: 1.2rem; color: #ffd600; font-weight: bold; }
+
+        /* --- ELEMENTOS MÁGICOS (Flores flotantes) --- */
+        .magic-element { position: absolute; font-size: 22px; animation: float 6s ease-in-out infinite; z-index: 5; opacity: 0.7; pointer-events: none; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-40px) rotate(15deg); } }
+    </style>
+</head>
+<body>
+    <svg width="0" height="0"><defs><clipPath id="svgHeart" clipPathUnits="objectBoundingBox"><path d="M0.5,1 C0.5,1,0,0.7,0,0.35 C0,0.15,0.15,0,0.35,0 C0.45,0,0.5,0.1,0.5,0.1 C0.5,0.1,0.55,0,0.65,0 C0.85,0,1,0.15,1,0.35 C1,0.7,0.5,1,0.5,1"></path></clipPath></defs></svg>
+    
+    <div id="pantalla-sobre">
+        <h2 class="texto-amarillo">Para ti Chanita ❤️</h2>
+        <div class="sobre-icono" onclick="abrirRegalo()">📩</div>
+        <p>Toca para abrir</p>
+    </div>
+
+    <div id="regalo" class="hidden">
+        <div class="stars-overlay"></div>
+        <p class="texto-amarillo">"Desde que dijiste que sí, los días han sido más felices"</p>
+        
+        <div class="player">
+            <span id="play-icon" onclick="toggleAudio()" style="cursor:pointer">⏸</span>
+            <div id="progress-bar"><div id="progress-fill"></div></div>
+            <audio id="musica" loop preload="auto">
+                <source src="https://files.catbox.moe/rgiuha.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <div class="heart-photo">
+            <img src="https://i.postimg.cc/52571Dg1/foto-jpeg.jpg" alt="Nosotros">
+        </div>
+
+        <div class="contador">
+            <p>Juntos desde hace:</p>
+            <span id="tiempo">Calculando...</span>
+        </div>
+
+        <p class="texto-amarillo" style="font-size: 14px;">🌻 Tulipanes amarillos para alguien especial 🌻</p>
+    </div>
+
+    <script>
+        const audio = document.getElementById('musica');
+        
+        function abrirRegalo() {
+            audio.play().catch(e => console.log("Permiso de audio"));
+            document.getElementById('pantalla-sobre').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('pantalla-sobre').classList.add('hidden');
+                document.getElementById('regalo').classList.remove('hidden');
+                crearMagia();
+            }, 800);
+        }
+
+        function toggleAudio() {
+            const btn = document.getElementById('play-icon');
+            if (audio.paused) { audio.play(); btn.innerText = '⏸'; }
+            else { audio.pause(); btn.innerText = '▶'; }
+        }
+
+        audio.ontimeupdate = () => {
+            const fill = document.getElementById('progress-fill');
+            if (audio.duration) fill.style.width = (audio.currentTime / audio.duration * 100) + "%";
+        };
+
+        const inicio = new Date(2025, 2, 7, 18, 27, 0).getTime();
+        setInterval(() => {
+            const diff = new Date().getTime() - inicio;
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            const f = (n) => n < 10 ? '0'+n : n;
+            document.getElementById('tiempo').innerText = `${d}d ${f(h)}h ${f(m)}m ${f(s)}s`;
+        }, 1000);
+
+        function crearMagia() {
+            const container = document.getElementById('regalo');
+            const emojis = ['🌻', '💛', '✨'];
+            for(let i=0; i<12; i++) {
+                const element = document.createElement('div');
+                element.className = 'magic-element';
+                element.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                element.style.left = Math.random() * 90 + 'vw';
+                element.style.top = Math.random() * 90 + 'vh';
+                element.style.animationDelay = Math.random() * 4 + 's';
+                container.appendChild(element);
+            }
+        }
+    </script>
+</body>
+</html>
