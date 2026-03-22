@@ -5,41 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para Chanita 💛</title>
     <style>
-        /* --- ESTILOS BASE Y CENTRADO --- */
+        /* --- ESTILOS BASE --- */
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; color: #fff; font-family: sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .hidden { display: none !important; }
         .texto-amarillo { color: #ffd600; text-align: center; font-weight: bold; text-shadow: 0 0 10px rgba(255, 214, 0, 0.5); }
 
-        /* --- PANTALLA 1: EL SOBRE (Con latido) --- */
+        /* --- PANTALLA 1: EL SOBRE --- */
         #pantalla-sobre { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; transition: opacity 0.8s; }
         .sobre-icono { font-size: 80px; cursor: pointer; animation: latido 1.5s infinite; filter: drop-shadow(0 0 10px #ffd600); margin: 20px; }
         @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        /* --- PANTALLA 2: EL REGALO (Diseño centrado) --- */
+        /* --- PANTALLA 2: EL REGALO --- */
         #regalo { position: relative; width: 100%; max-width: 400px; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 30px 20px; z-index: 10; }
         
-        /* Efecto de Estrellas/Destellos */
+        /* Estrellas de fondo */
         .stars-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.3; z-index: 1; pointer-events: none; }
 
-        /* REPRODUCTOR TIKTOK */
+        /* ESTRELLAS FUGACES */
+        .shooting-star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; opacity: 0; z-index: 2; pointer-events: none; animation: shoot 3s linear infinite; }
+        @keyframes shoot {
+            0% { transform: translate(-10vw, -10vh) rotate(45deg); opacity: 1; }
+            100% { transform: translate(110vw, 60vh) rotate(45deg); opacity: 0; }
+        }
+
+        /* REPRODUCTOR */
         .player { background: #ffd600; color: #000; width: 90%; padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px; z-index: 20; box-shadow: 0 0 15px rgba(255, 214, 0, 0.7); font-weight: bold; font-size: 0.9rem; }
         #play-icon { cursor: pointer; font-size: 1.2rem; }
         #progress-bar { flex-grow: 1; height: 5px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         #progress-fill { height: 100%; width: 0%; background: #000; transition: width 0.1s linear; }
 
-        /* EL CORAZÓN CON TU FOTO */
+        /* CORAZÓN CON FOTO */
         .heart-photo { width: 220px; height: 200px; background: #ffd600; -webkit-clip-path: url(#svgHeart); clip-path: url(#svgHeart); display: flex; justify-content: center; align-items: center; box-shadow: 0 0 30px #ffd600; z-index: 15; }
         .heart-photo img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* CONTADOR */
-        .contador { background: rgba(255, 214, 0, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 214, 0, 0.4); text-align: center; width: 90%; z-index: 20; margin-bottom: 20px; }
-        .contador p { margin: 0 0 5px 0; font-size: 0.8rem; color: #ccc; }
-        #tiempo { font-size: 1.2rem; color: #ffd600; font-weight: bold; }
+        /* CONTADOR (Letras blancas brillantes) */
+        .contador { background: rgba(255, 214, 0, 0.05); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 214, 0, 0.3); text-align: center; width: 90%; z-index: 20; }
+        .contador p { margin: 0 0 5px 0; font-size: 0.8rem; color: #eee; }
+        #tiempo { font-size: 1.3rem; color: #fff; font-weight: bold; text-shadow: 0 0 10px #fff, 0 0 20px rgba(255,255,255,0.5); }
 
-        /* --- ELEMENTOS MÁGICOS (Flores flotantes) --- */
-        .magic-element { position: absolute; font-size: 22px; animation: float 6s ease-in-out infinite; z-index: 5; opacity: 0.7; pointer-events: none; }
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-40px) rotate(15deg); } }
+        /* ELEMENTOS FLOTANTES */
+        .magic-element { position: absolute; font-size: 22px; animation: float 6s ease-in-out infinite; z-index: 5; opacity: 0.8; pointer-events: none; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-40px) rotate(20deg); } }
     </style>
 </head>
 <body>
@@ -56,7 +63,7 @@
         <p class="texto-amarillo">"Desde que dijiste que sí, los días han sido más felices"</p>
         
         <div class="player">
-            <span id="play-icon" onclick="toggleAudio()" style="cursor:pointer">⏸</span>
+            <span id="play-icon" onclick="toggleAudio()">⏸</span>
             <div id="progress-bar"><div id="progress-fill"></div></div>
             <audio id="musica" loop preload="auto">
                 <source src="https://files.catbox.moe/rgiuha.mp3" type="audio/mpeg">
@@ -72,19 +79,20 @@
             <span id="tiempo">Calculando...</span>
         </div>
 
-       <p style="color:#ffd600; font-size: 14px; z-index:20;">💛 Flores amarillas para mi Chanita bella 🌼</p>
+        <p style="color:#ffd600; font-size: 14px; z-index:20; font-weight:bold;">🌼 Flores amarillas para mi Chanita bella 💛</p>
     </div>
 
     <script>
         const audio = document.getElementById('musica');
         
         function abrirRegalo() {
-            audio.play().catch(e => console.log("Permiso de audio"));
+            audio.play().catch(e => console.log("Audio ready"));
             document.getElementById('pantalla-sobre').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('pantalla-sobre').classList.add('hidden');
                 document.getElementById('regalo').classList.remove('hidden');
                 crearMagia();
+                crearEstrellasFugaces();
             }, 800);
         }
 
@@ -112,16 +120,28 @@
 
         function crearMagia() {
             const container = document.getElementById('regalo');
-            const emojis = ['💛', '🌼', '✨'];
-            for(let i=0; i<12; i++) {
+            const emojis = ['🌼', '💛', '✨'];
+            for(let i=0; i<15; i++) {
                 const element = document.createElement('div');
                 element.className = 'magic-element';
                 element.innerText = emojis[Math.floor(Math.random() * emojis.length)];
                 element.style.left = Math.random() * 90 + 'vw';
-                element.style.top = Math.random() * 90 + 'vh';
-                element.style.animationDelay = Math.random() * 4 + 's';
+                element.style.top = Math.random() * 80 + 'vh';
+                element.style.animationDelay = Math.random() * 5 + 's';
                 container.appendChild(element);
             }
+        }
+
+        function crearEstrellasFugaces() {
+            const container = document.getElementById('regalo');
+            setInterval(() => {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.left = Math.random() * 50 + 'vw';
+                star.style.top = Math.random() * 40 + 'vh';
+                container.appendChild(star);
+                setTimeout(() => star.remove(), 3000);
+            }, 2000);
         }
     </script>
 </body>
